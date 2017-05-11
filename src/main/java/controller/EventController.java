@@ -17,6 +17,7 @@ public class EventController {
 
         Map params = new HashMap<>();
         params.put("eventContainer", "Codecool cinema");
+        params.put("eventContainer", "CDDDDD");
         return new ModelAndView(params, "product/index");
     }
 }
