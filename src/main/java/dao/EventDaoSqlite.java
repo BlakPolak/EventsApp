@@ -20,7 +20,7 @@ public class EventDaoSqlite implements EventDao{
     }
 
     @Override
-    public Event find(int id) {
+    public Event find(Integer id) {
         Event event = null;
         try {
             Connection connection = JDBCConnector.connection();
@@ -45,10 +45,9 @@ public class EventDaoSqlite implements EventDao{
 
         return event;
     }
-    }
 
     @Override
-    public void remove(int id) {
+    public void remove(Integer id) {
 
     }
 
@@ -76,10 +75,32 @@ public class EventDaoSqlite implements EventDao{
 
         return products;
     }
-    }
 
     @Override
-    public List<Event> getBy(String category) {
-        return null;
+    public List<Event> getBy(Category category) {
+        List<Event> products = new ArrayList<Event>();
+
+        try {
+            Connection connection = JDBCConnector.connection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from events where category = " + Integer.toString(category.getCategoryId()));
+            while(rs.next()) {
+                Event product = new Event(
+                        rs.getString("name"),
+                        new Category(rs.getString("category")),
+                        rs.getString("description"),
+                        new Date(rs.getString("date"))
+                );
+                products.add(product);
+            }
+        } catch(SQLException e) {
+            System.out.println("Connect to DB failed");
+            System.out.println(e.getMessage());
+        }
+
+        return products;
     }
 }
+
+
+

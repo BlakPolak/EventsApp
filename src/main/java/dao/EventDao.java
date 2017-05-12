@@ -1,15 +1,16 @@
 package dao;
 
 
+import model.Category;
 import model.Event;
 
 import java.util.List;
 
 public interface EventDao {
     void add(Event event);
-    Event find(int id);
-    void remove(int id);
+    Event find(Integer id);
+    void remove(Integer id);
 
     List<Event> getAll();
-    List<Event> getBy(String category);
+    List<Event> getBy(Category category);
 }
