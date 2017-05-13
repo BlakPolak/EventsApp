@@ -1,23 +1,36 @@
 package controller;
 
-import dao.EventDao;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+
+import dao.EventDao;
+import dao.EventDaoSqlite;
+import model.Event;
+import spark.ModelAndView;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by rafalstepien on 28/04/2017.
- */
-public class EventController {
-    public static ModelAndView renderProducts(Request req, Response res) {
-        //Get events from database by Dao
 
-        Map params = new HashMap<>();
-        params.put("eventContainer", "Codecool cinema");
-        params.put("eventContainer", "CDDDDD");
-        return new ModelAndView(params, "product/index");
+public class EventController {
+
+    public ModelAndView showEvents(Request req, Response res) {
+        //Get events from database by Dao
+        EventDao eventDao = new EventDaoSqlite();
+        Map<String, Object> viewObjects = new HashMap<>();
+        ArrayList<Event> events = (ArrayList<Event>) eventDao.getAll();
+        viewObjects.put("events", events);
+
+        ModelAndView model = new ModelAndView(viewObjects, "index");
+
+        return model;
+    }
+
+    public ModelAndView createEvent(Request req, Response res) {
+        ModelAndView model = new ModelAndView("", "create_event");
+
+        return model;
     }
 }
