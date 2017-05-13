@@ -1,30 +1,35 @@
-import controller.EventController;
+import  static spark.Spark.*;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import controller.EventController;
+import dao.SqliteJDBCConnector;
+import java.sql.SQLException;
 
-import  static spark.Spark.*;
 
 
 public class Main {
+    public static ThymeleafTemplateEngine thymeEngine = new ThymeleafTemplateEngine();
 
     public static void main(String[] args) {
+        try {
+            SqliteJDBCConnector.createTables();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
         staticFileLocation("/public");
         port(8888);
 
-        // Always start with more specific routes
-        get("/hello", (req, res) -> "Hello World");
+        EventController controller = new EventController();
 
-        // Always add generic routes to the end
-        get("/", EventController::renderProducts, new ThymeleafTemplateEngine());
-        // Equivalent with above
-        get("/index", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render( EventController.renderProducts(req, res) );
+        get("/", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render(controller.showEvents(req, res));
+        });
+
+        get("/create_event", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render(controller.createEvent(req, res));
         });
     }
 
