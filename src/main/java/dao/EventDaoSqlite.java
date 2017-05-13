@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,17 +25,19 @@ public class EventDaoSqlite implements EventDao{
     public Event find(Integer id) {
         Event event = null;
         try {
-            Connection connection = JDBCConnector.connection();
+            Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from events where id = " + Integer.toString(id));
 
             if(rs.next()) {
-
+                String myDateStr = rs.getString("date");
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM HH:mm y");
+                Date myDate = sdf.parse(myDateStr);
                 event = new Event(
                         rs.getString("name"),
                         new Category(rs.getString("category")),
                         rs.getString("description"),
-                        new Date(rs.getString("date"))
+                        myDate
                 );
                 event.setId(rs.getInt("id"));
             }
@@ -41,6 +45,8 @@ public class EventDaoSqlite implements EventDao{
         } catch(SQLException e) {
             System.out.println("Connect to DB failed");
             System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         return event;
@@ -53,52 +59,55 @@ public class EventDaoSqlite implements EventDao{
 
     @Override
     public List<Event> getAll() {
-        List<Event> products = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
-            Connection connection = JDBCConnector.connection();
+            Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from products");
+            ResultSet rs = statement.executeQuery("SELECT * FROM events");
             while(rs.next()) {
-                Event product = new Event(
+                Event event = new Event(
                         rs.getString("name"),
                         new Category(rs.getString("category")),
                         rs.getString("description"),
-                        new Date(rs.getString("date"))
+                        format.parse(rs.getString("date"))
                 );
-                products.add(product);
+                events.add(event);
             }
         } catch(SQLException e) {
-            System.out.println("Connect to DB failed");
+            System.out.println("Second connection to DB failed");
             System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        return products;
+        return events;
     }
 
     @Override
     public List<Event> getBy(Category category) {
-        List<Event> products = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
 
         try {
-            Connection connection = JDBCConnector.connection();
+            Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from events where category = " + Integer.toString(category.getCategoryId()));
             while(rs.next()) {
-                Event product = new Event(
+                Event event = new Event(
                         rs.getString("name"),
                         new Category(rs.getString("category")),
                         rs.getString("description"),
                         new Date(rs.getString("date"))
                 );
-                products.add(product);
+                events.add(event);
             }
         } catch(SQLException e) {
             System.out.println("Connect to DB failed");
             System.out.println(e.getMessage());
         }
 
-        return products;
+        return events;
     }
 }
 

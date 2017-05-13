@@ -5,15 +5,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JDBCConnector {
+public class SqliteJDBCConnector {
 
     public static Connection connection() {
         Connection connection = null;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/database/events.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/events.db");
         } catch (SQLException e) {
-            System.out.println("Connection to DB failed");
+            System.out.println("First connection to DB failed");
         }
 
         return connection;
