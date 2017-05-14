@@ -31,8 +31,8 @@ public class EventDaoSqlite implements EventDao{
 
             if(rs.next()) {
                 String myDateStr = rs.getString("date");
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM HH:mm y");
-                Date myDate = sdf.parse(myDateStr);
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Date myDate =  format.parse(myDateStr);
                 event = new Event(
                         rs.getString("name"),
                         new Category(rs.getString("category")),
@@ -73,6 +73,7 @@ public class EventDaoSqlite implements EventDao{
                         rs.getString("description"),
                         format.parse(rs.getString("date"))
                 );
+                event.setId(rs.getInt("id"));
                 events.add(event);
             }
         } catch(SQLException e) {
