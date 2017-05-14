@@ -32,7 +32,6 @@ public class EventController {
         Map<String, Object> viewObjects = new HashMap<>();
         Event event = eventDao.find(id);
         viewObjects.put("event", event);
-        viewObjects.put("id", id);
 
         ModelAndView model = new ModelAndView(viewObjects, "details");
 
@@ -53,4 +52,19 @@ public class EventController {
         Event newEvent = new Event(name, newCategory, description, startDate);
         eventDao.add(newEvent);
     }
+    public ModelAndView getEventToUpdate(Integer id) {
+        EventDao eventDao = new EventDaoSqlite();
+        Map<String, Object> viewObjects = new HashMap<>();
+        Event event = eventDao.find(id);
+        viewObjects.put("event", event);
+
+        ModelAndView model = new ModelAndView(viewObjects, "update_event");
+
+        return model;
+    }
+    public void updateEvent(Integer id, String name, String categoryName, String description, String startDate) {
+        EventDao eventDao = new EventDaoSqlite();
+        eventDao.update(id, name, categoryName, description, startDate);
+    }
+
 }
