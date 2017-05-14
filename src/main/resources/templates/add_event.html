@@ -33,7 +33,7 @@
 
 <div class="container">
     <div class="starter-template">
-        <form class="form-horizontal" role="form" id='event-create-form' method='POST' th:action="@{'~/create_event/'}")>
+        <form class="form-horizontal" role="form" id='event-create-form' th:action="@{'~/create_event'}" method='POST'>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="name">Name: </label>
                 <div class="col-sm-5">
@@ -42,11 +42,10 @@
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="category">Category: </label>
-                <select id="category" name="category">
+                <select id="category" name="event-category">
                     <th:block th:each="category : ${categories}">
                         <option th:text="${category.getCategoryName()}" th:value="${category.getCategoryName()}">Category</option>
                     </th:block>
-
                 </select>
             </div>
             <div class="form-group">

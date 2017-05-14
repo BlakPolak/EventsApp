@@ -1,11 +1,9 @@
 package controller;
 
-import spark.Request;
-import spark.Response;
-
 
 import dao.EventDao;
 import dao.EventDaoSqlite;
+import model.Category;
 import model.Event;
 import spark.ModelAndView;
 
@@ -20,6 +18,7 @@ public class EventController {
         //Get events from database by Dao
         EventDao eventDao = new EventDaoSqlite();
         Map<String, Object> viewObjects = new HashMap<>();
+//        ArrayList<Category> categories = (ArrayList<Category>) Category.getListOfCategories();
         ArrayList<Event> events = (ArrayList<Event>) eventDao.getAll();
         viewObjects.put("events", events);
 
@@ -40,9 +39,18 @@ public class EventController {
         return model;
     }
 
-    public ModelAndView createEvent(Request req, Response res) {
-        ModelAndView model = new ModelAndView("", "create_event");
-
+    public ModelAndView eventForm() {
+        EventDao eventDao = new EventDaoSqlite();
+        Map<String, Object> viewObjects = new HashMap<>();
+        viewObjects.put("categories", eventDao.getCategories());
+        ModelAndView model = new ModelAndView(viewObjects, "add_event");
         return model;
+    }
+
+    public void createEvent(String name, String categoryName, String description, String startDate) {
+        EventDao eventDao = new EventDaoSqlite();
+        Category newCategory = new Category(categoryName);
+        Event newEvent = new Event(name, newCategory, description, startDate);
+        eventDao.add(newEvent);
     }
 }
