@@ -11,12 +11,12 @@ public class Event {
     private String name;
     private Category category;
     private String description;
-    private Date startDate;
+    private String startDate;
     static ArrayList<Event> eventList = new ArrayList<>();
     private static AtomicInteger number = new AtomicInteger(0);
 
 
-    public Event(String name, Category category, String description, Date startDate ) {
+    public Event(String name, Category category, String description, String startDate ) {
         this.id = number.getAndIncrement();
         this.name = name;
         this.category = category;
@@ -40,7 +40,7 @@ public class Event {
         return description;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
@@ -64,7 +64,7 @@ public class Event {
         this.description = description;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

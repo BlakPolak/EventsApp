@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -14,7 +11,7 @@ public class Category {
     protected String name;
 
     private static AtomicInteger number = new AtomicInteger(0);
-    public  static ArrayList<Category> categories = new ArrayList<>();
+    public  static List<Category> categories = new ArrayList<>();
     private ArrayList<Event> eventList = new ArrayList<>();
 
     public Category(){
@@ -25,6 +22,7 @@ public class Category {
         this.id = number.getAndIncrement();
         this.name = name;
         this.eventList = new ArrayList<>();
+        categories.add(this);
     }
 
     public Integer getCategoryId() {
@@ -49,6 +47,16 @@ public class Category {
 //                }
 //            }
 //        }
+    }
+    public static Category getCategoryByName(String name) {
+        Iterator<Category> itr = categories.iterator();
+        while (itr.hasNext()) {
+            Category category = itr.next();
+            if (category.getCategoryName().toLowerCase().equals(name.toLowerCase())) {
+                return category;
+            }
+        }
+        return null;
     }
 
     public static void addCategoryToList(Category category) {
@@ -88,6 +96,10 @@ public class Category {
 //            show.text("There are no events for this category");
 //        }
 
+    }
+
+    public static List<Category> getListOfCategories() {
+        return categories;
     }
 
     public String toString() {
