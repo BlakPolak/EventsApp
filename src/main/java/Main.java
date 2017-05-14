@@ -34,8 +34,38 @@ public class Main {
         });
 
         get("/create_event", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render(controller.createEvent(req, res));
+            return new ThymeleafTemplateEngine().render(controller.eventForm());
         });
+
+        post("/create_event", (Request req, Response res) -> {
+            String name = req.queryParams("event-name");
+            String categoryName = req.queryParams("event-category");
+            String description = req.queryParams("event-description");
+            String startDate = req.queryParams("event-startDate");
+            controller.createEvent(name, categoryName, description, startDate);
+            res.redirect("/");
+            return "";
+        });
+
+        get("/update/:id", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render(controller. getEventToUpdate(Integer.parseInt(req.params(":id"))));
+        });
+
+        post("/update/:id", (Request req, Response res) -> {
+            Integer id = Integer.parseInt(req.params(":id"));
+            String name = req.queryParams("event-name");
+            String categoryName = req.queryParams("event-category");
+            String description = req.queryParams("event-description");
+            String startDate = req.queryParams("event-startDate");
+            controller.updateEvent(id, name, categoryName, description, startDate);
+            res.redirect("/");
+            return "";
+        });
+
+
+//        get("/create_event", (Request req, Response res) -> {
+//            return new ThymeleafTemplateEngine().render(controller.createEvent(name, categoryName, description, startDate));
+//        });
     }
 
 

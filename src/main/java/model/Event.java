@@ -13,7 +13,7 @@ public class Event {
     private String description;
     private String startDate;
     static ArrayList<Event> eventList = new ArrayList<>();
-    private static AtomicInteger number = new AtomicInteger(0);
+    private static AtomicInteger number = new AtomicInteger(5);
 
 
     public Event(String name, Category category, String description, String startDate ) {
