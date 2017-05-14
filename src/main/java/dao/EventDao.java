@@ -12,5 +12,8 @@ public interface EventDao {
     void remove(Integer id);
 
     List<Event> getAll();
+
+    List<Category> getCategories();
+
     List<Event> getBy(Category category);
 }
