@@ -15,8 +15,6 @@
         <tbody>
         <tr th:each="event : ${events}">
             <td><a th:href="@{'~/details/' + ${event.id}}" th:text="${event.name}">Name</a></td>
-            <td >-</td>
-            <td >-</td>
         </tr>
         </tbody>
     </table>

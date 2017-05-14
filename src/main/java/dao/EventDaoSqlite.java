@@ -3,10 +3,7 @@ package dao;
 import model.Category;
 import model.Event;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +14,30 @@ public class EventDaoSqlite implements EventDao{
     public void add(Event event) {
         try {
             Connection connection = SqliteJDBCConnector.connection();
-            Statement statement = connection.createStatement();
-            statement.executeQuery(String.format("INSERT INTO events (id, name, category, description, date) VALUES (%d, '%s, '%s', '%s', '%s');",
-                    event.getId(), event.getName(), event.getCategoryName(), event.getDescription(), event.getStartDate()));
+            String insertQuery = "INSERT INTO events(id, name, category, description, date) VALUES(?, ?, ?, ?, ?);";
+
+            // Prepared statements allow us to avoid SQL injection attacks
+            PreparedStatement pstmt = connection.prepareStatement(insertQuery);
+
+            // JDBC binds every prepared statement argument to a Java Class such as Integer and or String
+            pstmt.setInt(1, event.getId());
+            pstmt.setString(2, event.getName());
+            pstmt.setString(3, event.getCategoryName());
+            pstmt.setString(4, event.getDescription());
+            pstmt.setString(5, event.getStartDate());
+
+
+            pstmt.executeUpdate();
+
+            // Unless closed prepared statement connections will linger
+            // Not very important for a trivial app but it will burn you in a professional large codebase
+
+//            Statement statement = connection.createStatement();
+//            statement.executeUpdate(String.format("INSERT INTO events(id, name, category, description, date) VALUES (%d, '%s, '%s', '%s', '%s')",
+//                    event.getId(), event.getName(), event.getCategoryName(), event.getDescription(), event.getStartDate()));
 
         } catch (SQLException e) {
-            System.out.println("Connect to DB failed");
+            System.out.println("Add event to DB failed");
             System.out.println(e.getMessage());
 
         }
