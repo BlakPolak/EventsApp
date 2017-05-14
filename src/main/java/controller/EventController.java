@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class EventController {
 
-    public ModelAndView showEvents(Request req, Response res) {
+    public ModelAndView showEvents() {
         //Get events from database by Dao
         EventDao eventDao = new EventDaoSqlite();
         Map<String, Object> viewObjects = new HashMap<>();
@@ -24,6 +24,18 @@ public class EventController {
         viewObjects.put("events", events);
 
         ModelAndView model = new ModelAndView(viewObjects, "index");
+
+        return model;
+    }
+
+    public ModelAndView getEvent(Integer id) {
+        EventDao eventDao = new EventDaoSqlite();
+        Map<String, Object> viewObjects = new HashMap<>();
+        Event event = eventDao.find(id);
+        viewObjects.put("event", event);
+        viewObjects.put("id", id);
+
+        ModelAndView model = new ModelAndView(viewObjects, "details");
 
         return model;
     }
