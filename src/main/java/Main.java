@@ -25,7 +25,12 @@ public class Main {
         EventController controller = new EventController();
 
         get("/", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render(controller.showEvents(req, res));
+            return new ThymeleafTemplateEngine().render(controller.showEvents());
+        });
+
+
+        get("/details/:id", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render(controller.getEvent(Integer.parseInt(req.params(":id"))));
         });
 
         get("/create_event", (Request req, Response res) -> {
