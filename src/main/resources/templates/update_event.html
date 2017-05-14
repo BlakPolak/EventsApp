@@ -33,7 +33,7 @@
 
 <div class="container">
     <div class="starter-template">
-        <form class="form-horizontal" role="form" id='event-create-form' method='POST' th:action= "@{'~/update_event/'+ ${event.id}}">
+        <form class="form-horizontal" role="form" id='event-create-form' method='POST' th:action= "@{'~/update/'+ ${event.id}}">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="name">Name: </label>
                 <div class="col-sm-5">
@@ -58,9 +58,9 @@
                     <input class="form-control" type='date' id="startDate" name='event-startDate' placeholder="Enter a new start date" th:text="${event.getStartDate()}"/>
                 </div>
             </div>
-            <div th:if event >
+            <div>
                 <input type='hidden' name='event-id' th:text="${event.getId()}" />
-            </div>d
+            </div>
         </form>
         <input type='submit' class="btn btn-primary" form='event-create-form' value='Update'/>
 

@@ -29,13 +29,6 @@ public class EventDaoSqlite implements EventDao{
 
             pstmt.executeUpdate();
 
-            // Unless closed prepared statement connections will linger
-            // Not very important for a trivial app but it will burn you in a professional large codebase
-
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate(String.format("INSERT INTO events(id, name, category, description, date) VALUES (%d, '%s, '%s', '%s', '%s')",
-//                    event.getId(), event.getName(), event.getCategoryName(), event.getDescription(), event.getStartDate()));
-
         } catch (SQLException e) {
             System.out.println("Add event to DB failed");
             System.out.println(e.getMessage());
@@ -146,6 +139,28 @@ public class EventDaoSqlite implements EventDao{
         }
 
         return events;
+    }
+
+    @Override
+    public void update(Integer id, String name, String categoryName, String description, String startDate) {
+        try {
+            Connection connection = SqliteJDBCConnector.connection();
+            String updateQuery =
+                    "UPDATE events SET name = ?, category = ?, description = ?, date = ? WHERE id = ?;";
+
+            PreparedStatement pstmt = connection.prepareStatement(updateQuery);
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, categoryName);
+            pstmt.setString(3, description);
+            pstmt.setString(4, startDate);
+            pstmt.setInt(5, id);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -16,4 +16,6 @@ public interface EventDao {
     List<Category> getCategories();
 
     List<Event> getBy(Category category);
+
+    void update(Integer id, String name, String categoryName, String description, String startDate);
 }
