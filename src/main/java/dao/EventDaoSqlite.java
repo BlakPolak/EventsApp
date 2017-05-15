@@ -15,46 +15,35 @@ public class EventDaoSqlite implements EventDao{
         try {
             Connection connection = SqliteJDBCConnector.connection();
             String insertQuery = "INSERT INTO events(id, name, category, description, date) VALUES(?, ?, ?, ?, ?);";
-
             // Prepared statements allow us to avoid SQL injection attacks
             PreparedStatement pstmt = connection.prepareStatement(insertQuery);
-
             // JDBC binds every prepared statement argument to a Java Class such as Integer and or String
             pstmt.setInt(1, event.getId());
             pstmt.setString(2, event.getName());
             pstmt.setString(3, event.getCategoryName());
             pstmt.setString(4, event.getDescription());
             pstmt.setString(5, event.getStartDate());
-
-
             pstmt.executeUpdate();
             pstmt.close();
-
         } catch (SQLException e) {
             System.out.println("Add event to DB failed");
             System.out.println(e.getMessage());
-
         }
     }
 
     @Override
     public void update(Integer id, String name, String categoryName, String description, String startDate) {
-
         try {
             Connection connection = SqliteJDBCConnector.connection();
             String updateQuery = "UPDATE events SET name = ?, category = ?, description = ?, date = ? WHERE id = ?;";
-
             PreparedStatement pstmt = connection.prepareStatement(updateQuery);
-
             pstmt.setString(1, name);
             pstmt.setString(2, categoryName);
             pstmt.setString(3, description);
             pstmt.setString(4, startDate);
             pstmt.setInt(5, id);
-
             pstmt.executeUpdate();
             pstmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,9 +56,7 @@ public class EventDaoSqlite implements EventDao{
             Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from events where id = " + Integer.toString(id));
-
             if(rs.next()) {
-
                 event = new Event(
                         rs.getString("name"),
                         new Category(rs.getString("category")),
@@ -92,22 +79,18 @@ public class EventDaoSqlite implements EventDao{
         try {
             Connection connection = SqliteJDBCConnector.connection();
             String deleteQuery = "DELETE FROM events WHERE id = ?";
-
             PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
             pstmt.close();
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-
     @Override
     public List<Event> getAll() {
         List<Event> events = new ArrayList<>();
-
         try {
             Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
@@ -128,15 +111,12 @@ public class EventDaoSqlite implements EventDao{
             System.out.println("Second connection to DB failed");
             System.out.println(e.getMessage());
         }
-
         return events;
     }
-
 
     @Override
     public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
-
         try {
             Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
@@ -154,7 +134,6 @@ public class EventDaoSqlite implements EventDao{
             System.out.println("Second connection to DB failed");
             System.out.println(e.getMessage());
         }
-
         return categories;
     }
 
@@ -180,7 +159,6 @@ public class EventDaoSqlite implements EventDao{
             System.out.println("Connect to DB failed");
             System.out.println(e.getMessage());
         }
-
         return events;
     }
 }

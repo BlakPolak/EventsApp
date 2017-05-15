@@ -1,6 +1,5 @@
 package controller;
 
-
 import dao.EventDao;
 import dao.EventDaoSqlite;
 import model.Category;
@@ -13,15 +12,12 @@ import java.util.*;
 public class EventController {
 
     public ModelAndView showEvents() {
-        //Get events from database by Dao
         EventDao eventDao = new EventDaoSqlite();
         Map<String, Object> viewObjects = new HashMap<>();
-//        ArrayList<Category> categories = (ArrayList<Category>) Category.getListOfCategories();
         ArrayList<Event> events = (ArrayList<Event>) eventDao.getAll();
         viewObjects.put("events", events);
         viewObjects.put("categories", eventDao.getCategories());
         ModelAndView model = new ModelAndView(viewObjects, "index");
-
         return model;
     }
 
@@ -56,13 +52,11 @@ public class EventController {
         viewObjects.put("event", event);
         viewObjects.put("categories", eventDao.getCategories());
         ModelAndView model = new ModelAndView(viewObjects, "update_event");
-
         return model;
     }
 
     public void updateEvent(Integer id, String name, String categoryName, String description, String startDate) {
         EventDao eventDao = new EventDaoSqlite();
-
         eventDao.update(id, name, categoryName, description, startDate);
     }
 
@@ -79,7 +73,7 @@ public class EventController {
         Iterator<Event> iterator = events.iterator();
         while (iterator.hasNext()) {
             Event itrNext = iterator.next();
-            if ((Objects.equals(itrNext.getCategoryName(), category) || Arrays.asList(filterByCategory).contains(itrNext.getCategoryName()))) {
+            if ((Objects.equals(itrNext.getCategoryName(), category))) {
                 filterByCategory.add(itrNext);
             }
         }

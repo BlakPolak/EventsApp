@@ -1,28 +1,25 @@
-
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<body>
-
-<div th:fragment="list_events">
-    <h2>EVENTS</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="event : ${events}">
-            <td>
-                <a th:href="@{'~/details/' + ${event.id}}" th:text="${event.name}">Name</a>
-                <a th:href="@{'~/update/' + ${event.id}}"><button type="button" class="btn btn-default">Update</button></a>
-                <a th:href="@{'~/remove/' + ${event.id}}"><button type="button" class="btn btn-default">Remove</button></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-</body>
+    <body>
+        <div th:fragment="list_events">
+            <h2>EVENTS</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td>
+                            <a th:href="@{'~/details/' + ${event.id}}" th:text="${event.name}">Name</a>
+                            <a th:href="@{'~/update/' + ${event.id}}"><button type="button" class="btn btn-default">Update</button></a>
+                            <a th:href="@{'~/remove/' + ${event.id}}"><button type="button" class="btn btn-default">Remove</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>

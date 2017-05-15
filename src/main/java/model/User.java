@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+//TODO In future develop login for users
 
 public class User {
     private String name;

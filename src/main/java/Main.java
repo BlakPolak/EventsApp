@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 
 public class Main {
-    public static ThymeleafTemplateEngine thymeEngine = new ThymeleafTemplateEngine();
 
     public static void main(String[] args) {
         try {
@@ -73,9 +72,6 @@ public class Main {
             return new ThymeleafTemplateEngine().render(controller.getByCategory( category));
         });
 
-//        get("/create_event", (Request req, Response res) -> {
-//            return new ThymeleafTemplateEngine().render(controller.createEvent(name, categoryName, description, startDate));
-//        });
     }
 
 

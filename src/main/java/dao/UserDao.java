@@ -4,9 +4,8 @@ import model.User;
 
 import java.util.List;
 
-/**
- * Created by ppolak on 12.05.17.
- */
+//TODO In future develop login for users
+
 public interface UserDao {
     void add(User user);
     User find(int id);

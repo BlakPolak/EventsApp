@@ -1,20 +1,15 @@
 package model;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Event {
-    private Random rand = new Random();
     private Integer id;
     private String name;
     private Category category;
     private String description;
     private String startDate;
-    static ArrayList<Event> eventList = new ArrayList<>();
     private static AtomicInteger number = new AtomicInteger(5);
-
 
     public Event(String name, Category category, String description, String startDate ) {
         this.id = number.getAndIncrement();
@@ -22,10 +17,6 @@ public class Event {
         this.category = category;
         this.description = description;
         this.startDate = startDate;
-    }
-
-    public static void addToList(Event newEvent){
-        eventList.add(newEvent);
     }
 
     public Integer getId() {
@@ -58,14 +49,6 @@ public class Event {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
     }
 
     public String toString() {
