@@ -21,7 +21,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand"><span class="glyphicon glyphicon-home"> Codecool Events </span></a>
+            <a class="navbar-brand" th:href="@{~/}"><span class="glyphicon glyphicon-home"> Codecool Events </span></a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -37,25 +37,31 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="name">Name: </label>
                 <div class="col-sm-5">
-                    <input class="form-control" type='text' id="name" name='event-name' placeholder="Enter a name" th:text="${event.getName()}"/>
+                    <input class="form-control" type='text' id="name" name='event-name' th:value="${event.getName()}" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="category">Category: </label>
                 <div class="col-sm-5">
-                    <input class="form-control" type='text' id="category" name='event-category' placeholder="Enter a new category" th:text="${event.getCategoryName()}"/>
+                    <input class="form-control" type='text' id="category" name='event-category' list="categories" th:value="${event.getCategoryName()}" required/>
+                    <datalist id="categories" name="event-category">
+                        <th:block th:each="category : ${categories}">
+                            <option th:text="${category.getCategoryName()}" th:value="${category.getCategoryName()}">Category</option>
+                        </th:block>
+                    </datalist>
                 </div>
+
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="description">Description: </label>
                 <div class="col-sm-5">
-                    <textarea class="form-control" type='text' id="description" name='event-description' rows='4' cols='50' placeholder="Enter a new description" th:text="${event.getDescription()}"></textarea>
+                    <textarea class="form-control" type='text' id="description" name='event-description' rows='4' cols='50' th:text="${event.getDescription()}" required></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="startDate">Category: </label>
                 <div class="col-sm-5">
-                    <input class="form-control" type='date' id="startDate" name='event-startDate' placeholder="Enter a new start date" th:text="${event.getStartDate()}"/>
+                    <input class="form-control" type='date' id="startDate" name='event-startDate'  th:value="${event.getStartDate()}" required/>
                 </div>
             </div>
             <div>
