@@ -2,9 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-/**
- * Created by ppolak on 12.05.17.
- */
+
 public class User {
     private String name;
     private String login;

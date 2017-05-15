@@ -62,6 +62,16 @@ public class Main {
             return "";
         });
 
+        get("/remove/:id", (Request req, Response res) -> {
+            controller.removeEvent(Integer.parseInt(req.params(":id")));
+            res.redirect("/");
+            return "";
+        });
+
+        get("/filter", (Request req, Response res) -> {
+            String category = req.queryParams("category");
+            return new ThymeleafTemplateEngine().render(controller.getByCategory( category));
+        });
 
 //        get("/create_event", (Request req, Response res) -> {
 //            return new ThymeleafTemplateEngine().render(controller.createEvent(name, categoryName, description, startDate));

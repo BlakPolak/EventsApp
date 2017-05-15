@@ -7,9 +7,7 @@ import model.Category;
 import model.Event;
 import spark.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class EventController {
@@ -21,7 +19,7 @@ public class EventController {
 //        ArrayList<Category> categories = (ArrayList<Category>) Category.getListOfCategories();
         ArrayList<Event> events = (ArrayList<Event>) eventDao.getAll();
         viewObjects.put("events", events);
-
+        viewObjects.put("categories", eventDao.getCategories());
         ModelAndView model = new ModelAndView(viewObjects, "index");
 
         return model;
@@ -32,9 +30,7 @@ public class EventController {
         Map<String, Object> viewObjects = new HashMap<>();
         Event event = eventDao.find(id);
         viewObjects.put("event", event);
-
         ModelAndView model = new ModelAndView(viewObjects, "details");
-
         return model;
     }
 
@@ -52,6 +48,7 @@ public class EventController {
         Event newEvent = new Event(name, newCategory, description, startDate);
         eventDao.add(newEvent);
     }
+
     public ModelAndView getEventToUpdate(Integer id) {
         EventDao eventDao = new EventDaoSqlite();
         Map<String, Object> viewObjects = new HashMap<>();
@@ -62,6 +59,7 @@ public class EventController {
 
         return model;
     }
+
     public void updateEvent(Integer id, String name, String categoryName, String description, String startDate) {
         EventDao eventDao = new EventDaoSqlite();
 
@@ -71,5 +69,23 @@ public class EventController {
     public void removeEvent(int id) {
         EventDao eventDao = new EventDaoSqlite();
         eventDao.remove(id);
+    }
+
+    public ModelAndView getByCategory(String category) {
+        Map<String, Object> viewObjects = new HashMap<>();
+        EventDao eventDao = new EventDaoSqlite();
+        List<Event> filterByCategory = new ArrayList<>();
+        ArrayList<Event> events = (ArrayList<Event>) eventDao.getAll();
+        Iterator<Event> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            Event itrNext = iterator.next();
+            if ((Objects.equals(itrNext.getCategoryName(), category) || Arrays.asList(filterByCategory).contains(itrNext.getCategoryName()))) {
+                filterByCategory.add(itrNext);
+            }
+        }
+        viewObjects.put("events", filterByCategory);
+        viewObjects.put("categories", eventDao.getCategories());
+        ModelAndView model = new ModelAndView(viewObjects, "index");
+        return model;
     }
 }
