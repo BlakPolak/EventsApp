@@ -28,11 +28,35 @@ public class EventDaoSqlite implements EventDao{
 
 
             pstmt.executeUpdate();
+            pstmt.close();
 
         } catch (SQLException e) {
             System.out.println("Add event to DB failed");
             System.out.println(e.getMessage());
 
+        }
+    }
+
+    @Override
+    public void update(Integer id, String name, String categoryName, String description, String startDate) {
+
+        try {
+            Connection connection = SqliteJDBCConnector.connection();
+            String updateQuery = "UPDATE events SET name = ?, category = ?, description = ?, date = ? WHERE id = ?;";
+
+            PreparedStatement pstmt = connection.prepareStatement(updateQuery);
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, categoryName);
+            pstmt.setString(3, description);
+            pstmt.setString(4, startDate);
+            pstmt.setInt(5, id);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -54,7 +78,8 @@ public class EventDaoSqlite implements EventDao{
                 );
                 event.setId(rs.getInt("id"));
             }
-
+            statement.close();
+            rs.close();
         } catch(SQLException e) {
             System.out.println("Connect to DB failed");
             System.out.println(e.getMessage());
@@ -85,6 +110,8 @@ public class EventDaoSqlite implements EventDao{
                 event.setId(rs.getInt("id"));
                 events.add(event);
             }
+            statement.close();
+            rs.close();
         } catch(SQLException e) {
             System.out.println("Second connection to DB failed");
             System.out.println(e.getMessage());
@@ -92,6 +119,7 @@ public class EventDaoSqlite implements EventDao{
 
         return events;
     }
+
 
     @Override
     public List<Category> getCategories() {
@@ -107,6 +135,8 @@ public class EventDaoSqlite implements EventDao{
                 );
                 categories.add(category);
             }
+            statement.close();
+            rs.close();
             return categories;
         } catch(SQLException e) {
             System.out.println("Second connection to DB failed");
@@ -116,14 +146,13 @@ public class EventDaoSqlite implements EventDao{
         return categories;
     }
 
-
     @Override
     public List<Event> getBy(Category category) {
         List<Event> events = new ArrayList<>();
         try {
             Connection connection = SqliteJDBCConnector.connection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from events where category = " + Integer.toString(category.getCategoryId()));
+            ResultSet rs = statement.executeQuery("SELECT * FROM events WHERE category = " + Integer.toString(category.getCategoryId()));
             while(rs.next()) {
                 Event event = new Event(
                         rs.getString("name"),
@@ -133,34 +162,14 @@ public class EventDaoSqlite implements EventDao{
                 );
                 events.add(event);
             }
+            statement.close();
+            rs.close();
         } catch(SQLException e) {
             System.out.println("Connect to DB failed");
             System.out.println(e.getMessage());
         }
 
         return events;
-    }
-
-    @Override
-    public void update(Integer id, String name, String categoryName, String description, String startDate) {
-        try {
-            Connection connection = SqliteJDBCConnector.connection();
-            String updateQuery =
-                    "UPDATE events SET name = ?, category = ?, description = ?, date = ? WHERE id = ?;";
-
-            PreparedStatement pstmt = connection.prepareStatement(updateQuery);
-
-            pstmt.setString(1, name);
-            pstmt.setString(2, categoryName);
-            pstmt.setString(3, description);
-            pstmt.setString(4, startDate);
-            pstmt.setInt(5, id);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
 
